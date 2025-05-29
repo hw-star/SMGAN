@@ -9,7 +9,7 @@ PyTorch implementation of SMGAN: Remote Sensing Image super-resolution Reconstru
 
 ## The SMGAM structure diagram is as follows:
 
-![image text](https://github.com/hw-star/SMGAN/blob/main/readmeIamges/SMGAN.png)
+![image text](https://github.com/hw-star/SMGAN/blob/main/readmeIamges/SMGAM.png)
 
 
 ## important
