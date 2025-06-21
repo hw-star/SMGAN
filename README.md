@@ -1,5 +1,5 @@
 # SMGAN
-PyTorch implementation of SMGAN: Remote Sensing Image super-resolution Reconstruction based on Cross-scale state Space Modeling
+PyTorch implementation of SMGAN: A Multi-Path Generative Adversarial Network for Remote Sensing Image Super-Resolution Reconstruction
 
 ## Dependencies
 
