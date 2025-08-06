@@ -22,9 +22,9 @@ jsub/bash >./val.sh
 The final presentation order of the entire file is as follows:
 - codes
 - dataset
- - train
- - val
- - data_script
+-- train
+-- val
+-- data_script
 ResNet50.pth is placed in the pretrained_model folder.
 
 ## The SMGAM structure diagram is as follows:[Demo](https://hw-star.github.io/SMGAN/)
