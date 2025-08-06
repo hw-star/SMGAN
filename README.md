@@ -13,7 +13,7 @@ PyTorch implementation of SMGAN: A Multi-Path Generative Adversarial Network for
 
 
 ## important
-The code will be made public after the paper is accepted.
+The code and dataset are being updated and are expected to be completed by August 11, 2025.
 
 ## Matters needing attention
 
