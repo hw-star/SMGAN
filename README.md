@@ -17,7 +17,7 @@ jsub/bash >./train.sh
 ## 4.Test
 jsub/bash >./val.sh
   
-## The SMGAM structure diagram is as follows:
+## The SMGAM structure diagram is as follows:[Demo](https://hw-star.github.io/SMGAN/)
 ![image text](https://github.com/hw-star/SMGAN/blob/main/readmeIamges/SMGAM.png)
 
 ## important
