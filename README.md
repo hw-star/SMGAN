@@ -25,6 +25,14 @@ The final presentation order of the entire file is as follows:
 -- train
 -- val
 -- data_script
+
+- project
+  - data
+    - raw
+    - processed
+  - src
+    - main.py
+    - utils.py
 ResNet50.pth is placed in the pretrained_model folder.
 
 ## The SMGAM structure diagram is as follows:[Demo](https://hw-star.github.io/SMGAN/)
