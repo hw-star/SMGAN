@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMGAN-HW</title>
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="shortcut icon" href="./images/favicon.ico">
+</head>
+<body>
+  <div class="section centered">
+    <h1>✨ SMGAN: A Multi-Path Generative Adversarial Network for Remote Sensing Image Super-Resolution Reconstruction</h1>
+    <table align="center" width="675px" style="margin-bottom: 1rem;">
+		<tr>
+		  <td align="center" width="310px">
+			<span style="font-size:20px">
+			  <a href="https://hw-star.icu/">Wei Huo<sup>1</sup></a>
+			</span>
+		  </td>
+		  <td align="center" width="310px">
+			<span style="font-size:20px">
+			  <a href="https://cs.qhu.edu.cn/jxgz/jxysz/sssds2/f9308b1a4bee44f09f2aa9833df9dbfc.htm">Xiaodan Zhang<sup>1,2</sup></a>
+			</span>
+		  </td>
+		  <td align="center" width="310px">
+			<span style="font-size:20px">Qiyuan Zhang<sup>1</sup></span>
+		  </td>
+		  <td align="center" width="310px">
+			<span style="font-size:20px">Naihao Hu<sup>1</sup></span>
+		  </td>
+		</tr>
+	  </table>
+	  
+<!-- 	  <table align="center" width="475px" style="margin-bottom: 1rem;">
+		<tr>
+		  <td align="center" width="150px">
+			<span style="font-size:20px">xxxxxx<sup>1</sup></span>
+		  </td>
+		  <td align="center" width="150px">
+			<span style="font-size:20px">xxxxxxx<sup>1</sup></span>
+		  </td>
+		  <td align="center" width="150px">
+			<span style="font-size:20px">xxxxxxx<sup>1</sup></span>
+		  </td>
+		</tr>
+	  </table> -->
+	  
+	  <table align="center" width="1100px" style="margin-bottom: 1rem;">
+		<tr>
+		  <td align="center" style="text-align: center;">
+			<span style="font-size:18px;">
+			  <a href="https://cs.qhu.edu.cn/"><sup>1</sup> School of Computer Technology and Applications, Qinghai University, Xining 810016, China</a>
+			</span>
+		  </td>
+		</tr>
+		<tr>
+		  <td align="center" style="text-align: center;">
+			<span style="font-size:18px;">
+			  <a href="https://cs.qhu.edu.cn/sys/sysgk/index.htm"><sup>2</sup>Qinghai Provincial Laboratory for Intelligent Computing and Application, Qinghai University, Xining, Qinghai 810016, China</a>
+			</span>
+		  </td>
+		</tr>
+	  </table>
+	  
+	  <table align="center" width="350px">
+		<tr>
+		  <td align="center" width="120px">
+			<span style="font-size:22px">
+			  <a href="">📝 arXiv</a>
+			</span>
+		  </td>
+		  <td align="center" width="120px">
+			<span style="font-size:22px">
+			  <a href="https://github.com/hw-star/SMGAN">⚙️ code</a>
+			</span>
+			<br>
+		  </td>
+		</tr>
+	  </table>
+	  
+  </div>
+
+  <div class="section centered">
+	<h2>📃 Abstract</h2>
+  </div>
+  <div class="section">
+	<div class="abstract">
+	  <p>Remote sensing image super-resolution (SR) plays a critical role in compensating for the missing information in high-resolution (HR) imagery. However, traditional methods often struggle to strike a balance between preserving fine-grained local details and maintaining global structural consistency. The effective fusion of multi-scale features remains a challenging issue.<br> &emsp;&emsp; To address these limitations, this paper proposes a novel multi-path generative adversarial network (SMGAN) tailored for remote sensing image super-resolution reconstruction. SMGAN integrates three heterogeneous feature extraction branches—a deep residual convolutional network, an enhanced Mamba module, and a constant-scale Swin Transformer—to model image representations at local, regional, and global levels, respectively. This design enables comprehensive characterization of fine details, spatial structures, and contextual semantics. To further enhance the quality of multi-branch feature fusion, we introduce a Residual Attention Module (RAM), which employs a two-stage mechanism to achieve effective coupling and selective enhancement between the main feature stream and the fused stream. Considering the critical importance of edge structures and textural details in remote sensing imagery, we design a dual-discriminator architecture operating in both the image and gradient domains. Additionally, a structure-aware gradient loss function is proposed to better preserve edge sharpness and fine textures during reconstruction.<br> &emsp;&emsp; <strong style="color: #007acc;">Extensive experiments conducted on the self-built high-resolution remote sensing SR dataset RS-SR19 and the public land-use classification dataset AID demonstrate that SMGAN surpasses various state-of-the-art SR methods in terms of traditional quantitative metrics (e.g., PSNR and SSIM) as well as subjective visual quality. Notably, the model achieves mean LPIPS scores of approximately 0.344 and 0.357 on RS-SR19 and AID, respectively, indicating superior perceptual fidelity and detail restoration. Furthermore, on real-world remote sensing data from the complex terrain of the Sanjiangyuan region in Qinghai, SMGAN exhibits remarkable structural consistency and textural continuity, with robust performance under cloud occlusion conditions and a peak PSNR of around 36dB, highlighting its strong generalization and resilience.</strong></p>
+	</div>
+  </div>
+  <hr class="section-divider">
+
+  <div class="section centered">
+    <h2>Part I: Overall flowchart of the model</h2>
+    <div class="image-container">
+      <img src="./images/liuchengtu.png" alt="模型整体流程图">
+	  <div class="module-description">
+		<p>This flowchart shows the overall architecture of the SMGAN model from the input of low-resolution images to the output of high-resolution images.</p>
+	  </div>
+    </div>
+  </div>
+  <hr class="section-divider">
+
+  <div class="section centered">
+    <h2>Part II: Generator Structure Diagram (GAN)</h2>
+    <div class="image-container">
+      <img src="./images/架构图.png" alt="生成器结构图">
+	  <div class="module-description">
+		<p>The generator structure of SMGAN can be divided into three parts as a whole. The first part is the three-branch feature extraction module. It models the image features of the input image and its gradient map from the local (DRSE) - regional (CSSM) - global (M4X) levels respectively, complementing each other and effectively enhancing the overall quality of image reconstruction. The second part is the two-stage residual enhancement module, which realizes the feature interaction among different modalities and scales with the help of the RAM mechanism to improve the consistency and discriminability of the representation. The third part is the feature fusion and image reconstruction module. Firstly, multi-branch information is aggregated through MERGE, and then the final high-resolution image is generated through ERT.</p>
+	  </div>
+    </div>
+	<div class="image-container">
+		<img src="./images/san.png" alt="生成器结构图">
+		<div class="module-description">
+			<p>The DRSE module is used for feature encoding in both the image domain and gradient domain, with identical structures but separate weights to accommodate feature modelling for different types of information. The module consists of a shallow convolution layer and multiple residual blocks (ResBlocks). First, a 3×3 convolution and LeakyReLU extract initial features, followed by multiple residual blocks with skip connections to enhance nonlinear expression and gradient propagation. At the end, long connections are used to fuse the initial and residual features, preserving low-level details while enhancing structural semantic modelling capabilities. This module excels at capturing local textures and structures, laying the foundation for subsequent multimodal fusion and remote sensing image reconstruction.</p>
+		    <p>The Constant Scale Swin Transformer Module (CSSM) serves as the second branch, focusing on medium-scale context modelling to enhance regional structure and texture perception. This module is based on a modified Swin Transformer architecture, retaining the local window and sliding window mechanisms while adjusting the dimensions of the internal multi-layer feature maps to ensure consistency, thereby avoiding information loss caused by multi-stage downsampling. The CSSM first extracts semantic features using a shallow CNN (SCNN), then maps them into feature blocks of a uniform scale via Patch Embedding. The backbone employs a modified Swin Transformer, using a 7×7 sliding window to perform self-attention calculations. The CSSM is deployed in both the image domain and the gradient domain, with consistent structures but independently optimised parameters, enhancing the model's multi-modal modelling capabilities and laying the foundation for subsequent feature fusion.</p>
+			<p>The M4X module is a third branch customised for remote sensing image super-resolution tasks based on the Mamba architecture. It has the ability to model distant sequence dependencies while maintaining spatial resolution. The module first projects the input into a high-dimensional space through point convolution and introduces simplified position encoding to enhance spatial perception. The backbone consists of multiple layers of Mamba units, combined with mechanisms such as LayerNorm, GELU, DropPath, and LayerScale to enhance nonlinear expression and training stability. At the end, inverse pointwise convolution is used to restore the original channel dimension. The M4X structure is applied in parallel to both the image domain and the gradient domain, with identical structures but independently trained parameters, facilitating the learning of complementary structural and textural information between the two modalities and providing rich support for feature fusion.</p>
+		</div>
+	</div>
+	<div class="image-container">
+		<img src="./images/ram.png" alt="生成器结构图">
+		<div class="module-description">
+			<p>The Residual Attention Module (RAM), the input feature channels are concatenated, and then two layers of convolutions are used to generate channel attention weights and feature compensation terms, respectively.  Attention is used to weight channel importance, and compensation terms are used to enhance feature representation through residual connections, balancing stability and dynamic adjustment.</p>
+		</div>
+	</div>
+	<div class="image-container">
+		<img src="./images/last.png" alt="生成器结构图">
+		<img src="./images/chong.png" alt="生成器结构图">
+		<div class="module-description">
+			<p>MERGE consists of a lightweight convolutional stack, which is used to integrate multi-modal features after two-stage fusion, unify the global context, and compress channel information to extract high semantic density representations.   ERT consists of a convolutional layer, a nonlinear activation function, and an upsampling module, endowed with strong texture and edge reconstruction capabilities to enhance image clarity and structural fidelity.</p>
+		</div>
+	</div>
+  </div>
+  <hr class="section-divider">
+
+  <div class="section centered">
+    <h2>Part III: Datasets (three), loss functions and evaluation metrics</h2>
+    <div class="image-container">
+      <img src="./images/datas.png" alt="对比模型数据">
+	  <div class="module-description">
+		<p>(1): RS-SR19 is an expanded version of the RRSSRD dataset, with low-quality images removed and high-quality samples added to create a more representative remote sensing image super-resolution dataset. The dataset includes 19 types of typical landforms, covering scenarios such as airports, bare land, and water bodies. The images are sourced from WorldView-2 and Gaofen-2 satellites, comprising a total of 4,045 pairs of RGB images, each with a resolution of 480×480. During training, HR images are downsampled by a factor of 4 using bicubic interpolation to generate corresponding LR images with a resolution of 120×120, forming standard LR-HR pairs.</p>
+	    <p>(2): AID is a commonly used public dataset for remote sensing image processing, covering 30 typical scenes such as ports, farmland, and residential areas. The images are mainly sourced from Google Earth, with an original size of 600×600 pixels. In this study, we randomly selected typical images from the dataset and cropped them to 480×480 pixels as high-resolution (HR) images. Subsequently, we generated corresponding low-resolution (LR) images of 120×120 pixels using 4x bicubic interpolation.</p>
+	</div>
+    </div>
+	<div class="image-container">
+		<img src="./images/sanjiangyuan.png" alt="对比模型数据">
+	</div>
+	<div class="module-description">
+		<p>we selected the Three Rivers Source region in the heart of the Qinghai-Tibet Plateau to construct a test set to verify the robustness of SMGAN in complex environments.   This region has varied terrain and is often affected by high albedo surfaces, extreme climates, and high-altitude clouds, resulting in image interference such as cloud cover and blurred textures, which is far more challenging than conventional remote sensing scenarios.This test established two subsets, ‘Sanjiangyuan’ and ‘Sanjiangyuan-Cloud’ to evaluate the model's structural recovery and perception reconstruction capabilities under complex terrain and cloud cover. </p>
+	
+	</div>
+  </div>
+  <hr class="section-divider">
+
+  <div class="section centered">
+    <h2>Part IV: Compare the model data table diagram</h2>
+    <div class="image-container">
+      <img src="./images/duibi-1.png" alt="对比模型数据">
+    </div>
+	<div class="image-container">
+		<img src="./images/duibi-2.png" alt="对比模型数据">
+	</div>
+	<div class="module-description">
+		<p>This paper adopts two datasets for experiments: one is a self-constructed high-quality remote sensing image dataset, named RS-SR19; Another one is the widely used public remote sensing scene classification Dataset AID (Aerial Image Dataset). Five mainstream evaluation indicators were adopted: PSNR, SSIM, LPIPS, RMSE and SAM to evaluate the model performance from multiple dimensions such as image reconstruction accuracy, structural consistency, perceptual quality and spectral retention ability respectively.</p>
+	</div>
+  </div>
+  <hr class="section-divider">
+
+  <div class="section centered">
+    <h2>Part V: Visual image display</h2>
+    <div class="image-container">
+      <img src="./images/ke-1.png" alt="可视化图1">
+	  (a)
+      <img src="./images/ke-2.png" alt="可视化图2">
+	  (b)
+	  <img src="./images/ke-3.png" alt="可视化图3">
+	  (c)
+    </div>
+	<div class="module-description">
+		<p>(a) is the visual comparison of the self-made dataset RS-SR19, (b) is the visual comparison of the public dataset AID, and (c) is the visual effect of the Qinghai Sanjiangyuan dataset.</p>
+	</div>
+  </div>
+  <hr class="section-divider">
+
+  <div class="section centered">
+    <h2>Part VI: Ablation experiment results</h2>
+    <div class="image-container">
+      <img src="./images/duibi-ram.png" alt="消融实验结果图">
+	  (a)
+	  <img src="./images/duibi-ab.png" alt="消融实验结果图">
+	  (b)
+	  <img src="./images/duibi-ert.png" alt="消融实验结果图">
+	  (c)
+	  <img src="./images/loss.png" alt="消融实验结果图">
+	  (d)
+    </div>
+	<div class="module-description">
+		<p>(a) is the ablation experiment of the residual enhancement module (RAM), (b) is the ablation experiment of the weighted hyperparameters in the loss function, (c) is the ablation experiment of the reconstructed channel output factor, and (d) is the ablation experiment of the specific gradient loss term.</p>
+	</div>
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
